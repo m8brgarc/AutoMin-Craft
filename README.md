@@ -29,10 +29,14 @@ Thanks to the minify project for their CSS compressor and the JSMin project for 
  - JSMin: http://www.crockford.com/javascript/jsmin.html
  - LESS for PHP: http://leafo.net/lessphp/
  - SCSS for PHP: http://leafo.net/scssphp
+ - Autoprefixer for PHP: https://github.com/vladkens/autoprefixer-php
 
 
 Changelog
 ---
+### Version 0.5
+ - Added support for Autoprefixer, plugin now requires Node.js to be installed on the server.
+
 ### Version 0.4
  - Added support for SCSS.
  - Implemented intended behavior when cache is turned off. Cache file wasn't written at all, now it will write on every request.
@@ -69,6 +73,7 @@ environment.
     'autominEnabled' => true,
     'autominCachingEnabled' => true,
     'autominMinifyEnabled' => true,
+    'autominBrowserSupport' => 'last 2 version',
     'autominPublicRoot' => '/path/to/webroot/public',
     'autominCachePath' => '/path/to/webroot/public/cache',
     'autominCacheURL' => '/cache',
@@ -142,7 +147,7 @@ Or something like this:
     {{ getFootHtml() | automin('js') }}
 
 
-Or some kind of combination of these. As I (and almost noone else) don't have much experience with Craft so far,
+Or some kind of combination of these. As I (and almost no one else) don't have much experience with Craft so far,
 I have no idea what will turn out to be the best way of using it. :)
 
 *Because the filter outputs raw HTML, output escaping has been turned off. You should under no circumstances run this 
