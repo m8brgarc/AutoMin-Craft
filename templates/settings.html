@@ -73,6 +73,19 @@
 	</div>
 </div>
 
+<div class="field" id="autominBrowserSupport-field">
+    <div class="heading">
+        <label for="autominBrowserSupport">Browser Version Support</label>
+        <p class="instructions">Use <a href="https://github.com/ai/browserslist#queries" target="_blank">browser list queries</a> to define browser support</p>
+    </div>
+    <div class="input">
+        <input class="text fullwidth" type="text" id="autominBrowserSupport" name="autominBrowserSupport" value="{% if config_settings.autominBrowserSupport is not null %}{{ config_settings.autominBrowserSupport }}{% else %}{{ settings.autominBrowserSupport }}{% endif %}"{% if config_settings.autominPublicRoot is not null %} disabled="disabled"{% endif %}>
+        {% if config_settings.autominBrowserSupport is not null %}
+        <p class="setting-is-disabled">This setting has been configured in the config file.</p>
+        {% endif %}
+    </div>
+</div>
+
 <div class="field" id="autominPublicRoot-field">
   <div class="heading">
     <label for="autominPublicRoot">Public web root path</label>

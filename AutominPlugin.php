@@ -26,7 +26,7 @@ class AutominPlugin extends BasePlugin
 
   public function getVersion()
   {
-      return '0.4';
+      return '0.3';
   }
 
   public function getDeveloper()
@@ -62,6 +62,7 @@ class AutominPlugin extends BasePlugin
          'autominEnabled' => array(AttributeType::Bool, 'default' => true),
          'autominCachingEnabled' => array(AttributeType::Bool, 'default' => true),
          'autominMinifyEnabled' => array(AttributeType::Bool, 'default' => true),
+         'autominBrowserSupport' => array(AttributeType::String, 'default' => 'last 4 version'),
          'autominPublicRoot' => array(AttributeType::String, 'default' => ''),
          'autominCachePath' => array(AttributeType::String, 'default' => ''),
          'autominCacheURL' => array(AttributeType::String, 'default' => ''),
@@ -75,6 +76,7 @@ class AutominPlugin extends BasePlugin
     $config_settings['autominEnabled'] = craft()->config->get('autominEnabled');
     $config_settings['autominCachingEnabled'] = craft()->config->get('autominCachingEnabled');
     $config_settings['autominMinifyEnabled'] = craft()->config->get('autominMinifyEnabled');
+    $config_settings['autominBrowserSupport'] = craft()->config->get('autominBrowserSupport');
     $config_settings['autominPublicRoot'] = craft()->config->get('autominPublicRoot');
     $config_settings['autominCachePath'] = craft()->config->get('autominCachePath');
     $config_settings['autominCacheURL'] = craft()->config->get('autominCacheURL');

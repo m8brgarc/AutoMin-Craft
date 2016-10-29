@@ -22,6 +22,10 @@ class AutominVariable
     return craft()->automin->getSetting('autominMinifyEnabled');
   }
 
+  public function getBrowserSupport() {
+    return craft()->automin->getSetting('autominBrowserSupport');
+  }
+
   public function getPublicRoot() {
     return craft()->automin->getSetting('autominPublicRoot');
   }

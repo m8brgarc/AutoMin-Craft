@@ -43,10 +43,15 @@ class AutominService extends BaseApplicationComponent
     $settings['autominEnabled'] = craft()->config->get('autominEnabled')!==null ? craft()->config->get('autominEnabled') : $plugin_settings['autominEnabled'];
     $settings['autominCachingEnabled'] = craft()->config->get('autominCachingEnabled')!==null ? craft()->config->get('autominCachingEnabled') : $plugin_settings['autominCachingEnabled'];
     $settings['autominMinifyEnabled'] = craft()->config->get('autominMinifyEnabled')!==null ? craft()->config->get('autominMinifyEnabled') : $plugin_settings['autominMinifyEnabled'];
+    $settings['autominBrowserSupport'] = craft()->config->get('autominBrowserSupport')!==null ? craft()->config->get('autominBrowserSupport') : $plugin_settings['autominBrowserSupport'];
     $settings['autominPublicRoot'] = craft()->config->get('autominPublicRoot')!==null ? craft()->config->get('autominPublicRoot') : $plugin_settings['autominPublicRoot'];
     $settings['autominCachePath'] = craft()->config->get('autominCachePath')!==null ? craft()->config->get('autominCachePath') : $plugin_settings['autominCachePath'];
     $settings['autominCacheURL'] = craft()->config->get('autominCacheURL')!==null ? craft()->config->get('autominCacheURL') : $plugin_settings['autominCacheURL'];
     $settings['autominSCSSIncludePaths'] = craft()->config->get('autominSCSSIncludePaths')!==null ? craft()->config->get('autominSCSSIncludePaths') : $plugin_settings['autominSCSSIncludePaths'];
+
+    if($settings['autominBrowserSupport']=='') {
+        $settings['autominBrowserSupport'] = 'last 4 version';
+    }
 
     if ($settings['autominPublicRoot']=='') {
       $settings['autominPublicRoot'] = dirname($_SERVER['SCRIPT_FILENAME']);
@@ -201,23 +206,29 @@ class AutominService extends BaseApplicationComponent
         
         case self::MARKUP_TYPE_SCSS:
           
-					// Compile with SCSS
-					require_once(CRAFT_PLUGINS_PATH.'automin/vendor/scssphp/scss.inc.php');
+            // Compile with SCSS
+            require_once(CRAFT_PLUGINS_PATH.'automin/vendor/scssphp/scss.inc.php');
 
-					$scss_parser = new \scssc();
-          $scss_parser->setImportPaths($this->settings['autominSCSSIncludePaths']);
-					$code = $scss_parser->compile($code);
-          
-          if ($this->settings['autominMinifyEnabled']) {
+            $scss_parser = new \scssc();
+            $scss_parser->setImportPaths($this->settings['autominSCSSIncludePaths']);
+            $code = $scss_parser->compile($code);
+
+            require_once(CRAFT_PLUGINS_PATH.'automin/vendor/autoprefixerphp/lib/Autoprefixer.php');
+            $autoprefixer = new \Autoprefixer($this->settings['autominBrowserSupport']);
+            $code = $autoprefixer->compile($code);
+
+            if ($this->settings['autominMinifyEnabled']) {
             // Compress CSS
             require_once(CRAFT_PLUGINS_PATH.'automin/vendor/class.minify_css_compressor.php');
-            $code = \Minify_CSS_Compressor::process($code);	
-          }
-					break;
+            $code = \Minify_CSS_Compressor::process($code);
+            }
+        break;
+        case self::MARKUP_TYPE_CSS:
+                    require_once(CRAFT_PLUGINS_PATH.'automin/vendor/autoprefixerphp/lib/Autoprefixer.php');
+                    $autoprefixer = new \Autoprefixer($this->settings['autominBrowserSupport']);
+                    $code = $autoprefixer->compile($code);
 
-				case self::MARKUP_TYPE_CSS:
-
-          if ($this->settings['autominMinifyEnabled']) {
+        if ($this->settings['autominMinifyEnabled']) {
   					// Compress CSS
 	  				require_once(CRAFT_PLUGINS_PATH.'automin/vendor/class.minify_css_compressor.php');
 		  			$code = \Minify_CSS_Compressor::process($code);	

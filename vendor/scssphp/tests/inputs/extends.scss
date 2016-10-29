@@ -146,17 +146,6 @@ wassup {
     @extend #something;
 }
 
-// twitter-sass-bootstrap infinite loop
-
-.nav-tabs {
-  &.nav-justified {
-    @extend .nav-justified;
-  }
-}
-.nav-justified {
-  text-align: justify;
-}
-
 // multi-extend with nesting
 
 .btn:hover,
